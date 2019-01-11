@@ -9,19 +9,27 @@ import java.net.URL;
 import java.net.URLDecoder;
 import java.util.Enumeration;
 import java.util.HashSet;
+import java.util.Set;
 
 /**
- * ClassName: LoadClass
- * Description: 根据root class加载所有的class
- *
- * @author: starryfei
- * Date: 2019-01-09 22:13
+ * ClassName: ScanClass
+ * Description: TODO
+ * Author: starryfei
+ * Date: 2019-01-11 10:38
  **/
-public class LoadClass {
-    private static Logger logger = LoggerBuilder.getLogger(LoadClass.class);
+public class ScanClass {
+    private static Logger logger = LoggerBuilder.getLogger(ScanClass.class);
+    private static HashSet<Class<?>> classes = null;
 
-    public static void autoLoadClass(Class<?> rootClass) {
-        HashSet<Class<?>> classes = new HashSet<>();
+    /**
+     * 从根结点的类加载其他的bean
+     * @param rootClass
+     */
+    public static Set<Class<?>> autoLoadClass(Class<?> rootClass) {
+        if (classes != null) {
+            return classes;
+        }
+        classes = new HashSet<>();
         if (rootClass.getPackage() != null) {
             String packAgeName = rootClass.getPackage().getName();
             String packAge = packAgeName.replace(".", "/");
@@ -44,6 +52,7 @@ public class LoadClass {
             }
 
         }
+        return classes;
     }
 
     /**
@@ -67,7 +76,8 @@ public class LoadClass {
                         classFile.getName().length() - 6);
                 try {
                     // 类加载
-                    classs.add(Thread.currentThread().getContextClassLoader().loadClass(String.format("%s.%s", packAgeName, className)));
+                    classs.add(Thread.currentThread().getContextClassLoader().loadClass(String.format("%s.%s",
+                            packAgeName, className)));
                 } catch (ClassNotFoundException e) {
                     logger.error("ClassNotFoundException", e);
                 }

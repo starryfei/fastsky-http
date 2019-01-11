@@ -7,20 +7,12 @@ package com.starry.fastsky.common;
  * Date: 2019-01-08 13:49
  **/
 public class FastskyCommon {
-    public static String FASTSKY_LOGO1 = "  ______                        __                __                 \n" +
-            " /      \\                      |  \\              |  \\                \n" +
-            "|  $$$$$$\\ ______    _______  _| $$_     _______ | $$   __  __    __ \n" +
-            "| $$_  \\$$|      \\  /       \\|   $$ \\   /       \\| $$  /  \\|  \\  |  \\\n" +
-            "| $$ \\     \\$$$$$$\\|  $$$$$$$ \\$$$$$$  |  $$$$$$$| $$_/  $$| $$  | $$\n" +
-            "| $$$$    /      $$ \\$$    \\   | $$ __  \\$$    \\ | $$   $$ | $$  | $$\n" +
-            "| $$     |  $$$$$$$ _\\$$$$$$\\  | $$|  \\ _\\$$$$$$\\| $$$$$$\\ | $$__/ $$\n" +
-            "| $$      \\$$    $$|       $$   \\$$  $$|       $$| $$  \\$$\\ \\$$    $$\n" +
-            " \\$$       \\$$$$$$$ \\$$$$$$$     \\$$$$  \\$$$$$$$  \\$$   \\$$ _\\$$$$$$$\n" +
-            "                                                           |  \\__| $$\n" +
-            "                                                            \\$$    $$\n" +
-            "                                                             \\$$$$$$";
 
-    public static String FASTSKY_LOGO = "\n" +
+    public final static String FASTSKY_PORT = "fastsky.server.port";
+    public final static String FASTSKY_PATH = "fastsky.server.path";
+    public final static String APPLICATION_PROPERTIES = "application.properties";
+
+    public final static String FASTSKY_LOGO = "\n" +
             "                                                                           \n" +
             "     _.._                                         .'|      .-.          .- \n" +
             "   .' .._|                       .|             .'  |       \\ \\        / / \n" +

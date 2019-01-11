@@ -1,7 +1,6 @@
 package com.starry.fastsky;
 
-import com.starry.fastsky.common.FastskyCommon;
-import com.starry.fastsky.config.LoadClass;
+import com.starry.fastsky.config.ApplictaionInit;
 import com.starry.fastsky.server.NettyServer;
 
 /**
@@ -14,8 +13,8 @@ import com.starry.fastsky.server.NettyServer;
 public class FastSkyServer {
 
     public static void main(String[] args) {
-        System.out.println(FastskyCommon.FASTSKY_LOGO);
-        LoadClass.autoLoadClass(FastSkyServer.class);
+
+        ApplictaionInit.init(FastSkyServer.class, "");
 
         NettyServer server = new NettyServer();
         server.start();
