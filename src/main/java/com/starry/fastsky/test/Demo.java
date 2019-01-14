@@ -1,6 +1,7 @@
 package com.starry.fastsky.test;
 
 import com.starry.fastsky.annotation.FastController;
+import com.starry.fastsky.annotation.FastRoute;
 
 /**
  * ClassName: Demo
@@ -8,6 +9,11 @@ import com.starry.fastsky.annotation.FastController;
  * Author: starryfei
  * Date: 2019-01-11 14:46
  **/
-@FastController(value = "/")
+@FastController(value = "/Demo")
 public class Demo  {
+    @FastRoute()
+    public static String hello(){
+
+        return "hello ,world";
+    }
 }

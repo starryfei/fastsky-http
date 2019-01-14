@@ -13,16 +13,8 @@ public class DefaultBeanFactory implements BeanFactory {
 
     private static DefaultBeanFactory defaultBeanFactory;
     private static Map<String, Object> beans = new HashMap<>();
-    private DefaultBeanFactory(){
+    public DefaultBeanFactory(){
 
-    }
-
-    public static DefaultBeanFactory getInstance(){
-        if (defaultBeanFactory != null) {
-            return defaultBeanFactory;
-        }
-        defaultBeanFactory = new DefaultBeanFactory();
-        return defaultBeanFactory;
     }
 
     @Override
@@ -33,7 +25,9 @@ public class DefaultBeanFactory implements BeanFactory {
 
     @Override
     public void register(Object obj) {
-        beans.put(obj.getClass().getName(),obj);
+        String[] arrays = obj.getClass().getName().split("\\.");
+        String name = arrays[arrays.length-1];
+        beans.put(name, obj);
     }
 
     @Override

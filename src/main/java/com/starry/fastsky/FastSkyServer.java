@@ -14,11 +14,11 @@ public class FastSkyServer {
 
     public static void main(String[] args) {
 
-        ApplictaionInit.init(FastSkyServer.class, "");
+        ApplictaionInit.init(FastSkyServer.class, "/fastsky");
 
         NettyServer server = new NettyServer();
         server.start();
-
+        server.stop();
 
     }
 }

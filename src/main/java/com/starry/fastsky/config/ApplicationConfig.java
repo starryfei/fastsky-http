@@ -10,6 +10,16 @@ public class ApplicationConfig {
     private static ApplicationConfig applicationConfig ;
     private String packageName;
     private String rootPath;
+    private int port = 9511;
+
+    public int getPort() {
+        return port;
+    }
+
+    public void setPort(int port) {
+
+        this.port = port;
+    }
 
     public static ApplicationConfig getInstance() {
         if (applicationConfig == null) {

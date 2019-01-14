@@ -1,5 +1,7 @@
 package com.starry.fastsky.annotation;
 
+import com.starry.fastsky.enums.Response;
+
 import java.lang.annotation.*;
 
 /**
@@ -13,5 +15,5 @@ import java.lang.annotation.*;
 @Documented
 public @interface FastRoute {
     String path() default "";
-    String type() default "json";
+    Response type() default Response.TEXT;
 }

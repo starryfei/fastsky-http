@@ -1,9 +1,13 @@
-package BeanFactory;
+package beanfactory;
 
 import com.starry.fastsky.annotation.FastController;
+import com.starry.fastsky.factory.BeanFactory;
+import com.starry.fastsky.factory.DefaultBeanFactory;
+import com.starry.fastsky.test.Demo;
 import org.junit.Test;
 
-import java.lang.annotation.Annotation;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 
 /**
  * ClassName: BeanFactoryTest
@@ -17,10 +21,24 @@ public class BeanFactoryTest {
     public void fastskyController() throws ClassNotFoundException {
         Class cla = Class.forName("com.starry.fastsky.test.Demo");
         assert cla.getName().equals("com.starry.fastsky.test.Demo");
-//        for(Annotation annotation :cla.getAnnotations()) {
-//            System.out.println(annotation.getClass().getName());
-//        }
         assert cla.getAnnotation(FastController.class) != null;
+    }
+
+    @Test
+    public void runhello() throws NoSuchMethodException, InvocationTargetException, IllegalAccessException {
+        String name ="com.starry.fastsky.test.Demo";
+        System.out.println(name);
+        String[] arrays = (name.replaceAll("\\.","/")).split("/");
+        for (String str: arrays
+             ) {
+            System.out.println(str);
+        }
+//        System.out.println(arrays[arrays.length-1]);
+        BeanFactory beanFactory = new DefaultBeanFactory();
+        Demo demo = new Demo();
+        Method method = demo.getClass().getMethod("hello");
+        Object obj = method.invoke(demo.getClass(),null);
+        System.out.println(obj);
     }
 
 }

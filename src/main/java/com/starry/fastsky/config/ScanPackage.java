@@ -12,13 +12,13 @@ import java.util.HashSet;
 import java.util.Set;
 
 /**
- * ClassName: ScanClass
+ * ClassName: ScanPackage
  * Description: TODO
  * Author: starryfei
  * Date: 2019-01-11 10:38
  **/
-public class ScanClass {
-    private static Logger logger = LoggerBuilder.getLogger(ScanClass.class);
+public class ScanPackage {
+    private static Logger logger = LoggerBuilder.getLogger(ScanPackage.class);
     private static HashSet<Class<?>> classes = null;
 
     /**
