@@ -1,24 +1,26 @@
 package com.starry.fastsky.enums;
 
+import com.starry.fastsky.common.FastskyCommon;
+
 /**
  *
  */
-public enum Response {
+public enum FastSkyServerResponse {
     /** 返回json数据类型**/
-    JSON(0,"json"),
+    JSON(0, FastskyCommon.JSON),
     /** 返回text数据类型**/
 
-    TEXT(1,"Text"),
+    TEXT(1,FastskyCommon.TEXT),
     /** 返回view视图**/
 
-    VIEW(2,"View");
+    VIEW(2,"");
     private int type;
     private String returnType;
 
 
 
 
-     Response(int type, String returnType) {
+     FastSkyServerResponse(int type, String returnType) {
         this.type = type;
         this.returnType = returnType;
     }

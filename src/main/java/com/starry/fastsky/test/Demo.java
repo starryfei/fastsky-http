@@ -2,6 +2,7 @@ package com.starry.fastsky.test;
 
 import com.starry.fastsky.annotation.FastController;
 import com.starry.fastsky.annotation.FastRoute;
+import com.starry.fastsky.enums.FastSkyServerResponse;
 
 /**
  * ClassName: Demo
@@ -16,7 +17,7 @@ public class Demo  {
 
         return a+" "+b;
     }
-    @FastRoute()
+    @FastRoute(type = FastSkyServerResponse.JSON)
     public static User HH(User user){
         return user;
     }

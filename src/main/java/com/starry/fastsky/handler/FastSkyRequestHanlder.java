@@ -1,5 +1,6 @@
 package com.starry.fastsky.handler;
 
+import com.starry.fastsky.common.FastskyCommon;
 import com.starry.fastsky.config.ApplicationConfig;
 import com.starry.fastsky.route.RouteMethod;
 import com.starry.fastsky.util.LoggerBuilder;
@@ -39,17 +40,12 @@ public class FastSkyRequestHanlder extends SimpleChannelInboundHandler<DefaultHt
             return;
         }
         checkUri(queryStringDecoder.path());
-        Object obj = routeMethod.invoke(queryStringDecoder);
+        DefaultHttpResponse response = routeMethod.invoke(queryStringDecoder);
         for (Map.Entry<String, List<String>> entry: queryStringDecoder.parameters().entrySet()) {
             logger.info(entry.getValue().get(0));
             logger.info(entry.getKey());
 
         }
-        String context = "hello fastsky....."+obj;
-        ByteBuf buf = Unpooled.wrappedBuffer(context.getBytes(StandardCharsets.UTF_8));
-        DefaultFullHttpResponse response = new DefaultFullHttpResponse(HttpVersion.HTTP_1_1, HttpResponseStatus.OK, buf);
-        response.headers().set(HttpHeaderNames.CONTENT_TYPE, "text/plain");
-        response.headers().set(HttpHeaderNames.CONTENT_LENGTH, response.content().readableBytes());
         ChannelFuture future = channelHandlerContext.writeAndFlush(response);
         future.addListener(ChannelFutureListener.CLOSE);
     }

@@ -1,6 +1,6 @@
 package com.starry.fastsky.annotation;
 
-import com.starry.fastsky.enums.Response;
+import com.starry.fastsky.enums.FastSkyServerResponse;
 
 import java.lang.annotation.*;
 
@@ -15,5 +15,5 @@ import java.lang.annotation.*;
 @Documented
 public @interface FastRoute {
     String path() default "";
-    Response type() default Response.TEXT;
+    FastSkyServerResponse type() default FastSkyServerResponse.TEXT;
 }

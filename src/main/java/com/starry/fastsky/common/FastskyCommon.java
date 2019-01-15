@@ -11,6 +11,9 @@ public class FastskyCommon {
     public final static String FASTSKY_PORT = "fastsky.server.port";
     public final static String FASTSKY_PATH = "fastsky.server.path";
     public final static String APPLICATION_PROPERTIES = "application.properties";
+    public final static String JSON = "application/json";
+    public final static String TEXT = "text/plain";
+    public final static String HTML = "text/html";
 
     public final static String FASTSKY_LOGO = "\n" +
             "                                                                           \n" +
