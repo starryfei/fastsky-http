@@ -25,9 +25,9 @@ public class DefaultBeanFactory implements BeanFactory {
 
     @Override
     public void register(Object obj) {
-        String[] arrays = obj.getClass().getName().split("\\.");
-        String name = arrays[arrays.length-1];
-        beans.put(name, obj);
+//        String[] arrays = obj.getClass().getName().split("\\.");
+//        String name = arrays[arrays.length-1];
+        beans.put(obj.getClass().getName(), obj);
     }
 
     @Override

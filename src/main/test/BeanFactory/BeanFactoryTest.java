@@ -37,8 +37,9 @@ public class BeanFactoryTest {
         BeanFactory beanFactory = new DefaultBeanFactory();
         Demo demo = new Demo();
         Method method = demo.getClass().getMethod("hello");
+        String name1 =  method.getDeclaringClass().getName();
         Object obj = method.invoke(demo.getClass(),null);
-        System.out.println(obj);
+        System.out.println(obj+" "+name1);
     }
 
 }

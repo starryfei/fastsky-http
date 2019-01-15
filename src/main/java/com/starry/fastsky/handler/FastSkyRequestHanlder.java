@@ -22,6 +22,7 @@ import java.util.Map;
 @ChannelHandler.Sharable
 public class FastSkyRequestHanlder extends SimpleChannelInboundHandler<DefaultHttpRequest> {
     private final static Logger logger = LoggerBuilder.getLogger(FastSkyRequestHanlder.class);
+    private final static String FAVICON_ICO = "/favicon.ico";
     private RouteMethod routeMethod = new RouteMethod();
     @Override
     protected void channelRead0(ChannelHandlerContext channelHandlerContext, DefaultHttpRequest defaultHttpRequest) throws Exception {
@@ -33,13 +34,12 @@ public class FastSkyRequestHanlder extends SimpleChannelInboundHandler<DefaultHt
         }
 
         QueryStringDecoder queryStringDecoder = new QueryStringDecoder(URLDecoder.decode(defaultHttpRequest.uri(), "utf-8"));
-        logger.info(queryStringDecoder.path());
         // 过滤图标请求
-        if ("/favicon.ico".equals(queryStringDecoder.path())) {
+        if (FAVICON_ICO.equals(queryStringDecoder.path())) {
             return;
         }
         checkUri(queryStringDecoder.path());
-        Object obj = routeMethod.invoke(queryStringDecoder.path());
+        Object obj = routeMethod.invoke(queryStringDecoder);
         for (Map.Entry<String, List<String>> entry: queryStringDecoder.parameters().entrySet()) {
             logger.info(entry.getValue().get(0));
             logger.info(entry.getKey());

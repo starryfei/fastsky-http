@@ -21,4 +21,12 @@ public class UriTest {
         assert decoder.parameters().get("y").get(0).equals("2");
         assert URLUtil.getRoutePath(decoder.path()).equals("des");
     }
+    @Test
+    public void dataType(){
+        Class stringClass=String.class;
+        assert !stringClass.isPrimitive();
+        Class intClass = int.class;
+        assert intClass.isPrimitive();
+
+    }
 }

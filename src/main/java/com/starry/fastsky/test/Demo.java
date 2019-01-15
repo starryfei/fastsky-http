@@ -12,8 +12,12 @@ import com.starry.fastsky.annotation.FastRoute;
 @FastController(value = "/Demo")
 public class Demo  {
     @FastRoute()
-    public static String hello(){
+    public static String hello(int a, String b){
 
-        return "hello ,world";
+        return a+" "+b;
+    }
+    @FastRoute()
+    public static User HH(User user){
+        return user;
     }
 }
