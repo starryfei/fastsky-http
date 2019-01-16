@@ -1,6 +1,7 @@
 package com.starry.fastsky.route;
 
 import com.alibaba.fastjson.JSON;
+import com.starry.fastsky.annotation.FastController;
 import com.starry.fastsky.annotation.FastRoute;
 import com.starry.fastsky.common.FastskyCommon;
 import com.starry.fastsky.config.ApplicationConfig;
@@ -33,15 +34,22 @@ public class RouteMethod {
     private final static Logger logger = LoggerBuilder.getLogger(RouteMethod.class);
     private static Map<String, Method> methodMap = null;
 
-    private void loadMethod(String className) {
+    /**
+     * 加载bean方法名与方法的映射
+     *
+     */
+    private void loadMethod() {
         if (methodMap == null) {
             methodMap = new HashMap<>(16);
             List<Class<?>> beans = ApplictaionInit.routeBean();
             for (Class<?> cla : beans) {
+                FastController controller = cla.getAnnotation(FastController.class);
                 for (Method method : cla.getMethods()) {
-                    if(method.getAnnotation(FastRoute.class) != null) {
-                        String methodName = ApplicationConfig.getInstance().getRootPath() +
-                                "/"+className+"/" + method.getName();
+                    FastRoute fastRoute = method.getAnnotation(FastRoute.class);
+                    if(fastRoute != null) {
+                        String methodName = ApplicationConfig.getInstance().getRootPath() + controller.value()
+                                +fastRoute.path();
+                        System.out.println(methodName);
                         methodMap.put(methodName, method);
                     }
                 }
@@ -55,16 +63,23 @@ public class RouteMethod {
      * @return
      */
     public DefaultHttpResponse invoke(QueryStringDecoder queryStringDecoder) {
-        String routeName = URLUtil.getRoutePath(queryStringDecoder.path());
-        loadMethod(routeName);
+        String path = queryStringDecoder.path();
+        logger.info(path);
+        // 首页判断
+        if(ApplicationConfig.getInstance().getRootPath().equals(path)) {
+            return buildResponse(null,FastskyCommon.CONTEXT,null);
+        }
+        loadMethod();
 
-        Method method = methodMap.get(queryStringDecoder.path());
+        Method method = methodMap.get(path);
+        if (method == null) {
+            logger.error("can not run method" + queryStringDecoder.path());
+            String context = "404: can not find method";
+            return buildResponse(null, context, null);
+        }
         FastRoute fastRoute = method.getAnnotation(FastRoute.class);
         BeanFactoryManager manager = BeanFactoryManager.getInstance();
         Object obj = manager.getBean(method.getDeclaringClass().getName());
-        if (method == null) {
-            logger.error("can not run method" + queryStringDecoder.path());
-        }
         Object returnObj = null;
         try {
             Object[] args = ConvertComplexTypeUtil.convertDataType(method.getParameterTypes(), queryStringDecoder);
@@ -75,27 +90,37 @@ public class RouteMethod {
             e.printStackTrace();
         }
 
-        return buildResponse(returnObj, fastRoute.type());
+        return buildResponse(returnObj,null,fastRoute.type());
     }
     /**
      * 构建响应信息
      * @param result
      * @return
      */
-    private static DefaultFullHttpResponse buildResponse(Object result, FastSkyServerResponse serverResponse) {
-        ByteBuf buf = null;
-        String contentType = FastskyCommon.TEXT;
-        if (FastskyCommon.JSON.equals(serverResponse.getReturnType())) {
-            buf = Unpooled.wrappedBuffer(JSON.toJSONString(result).getBytes(StandardCharsets.UTF_8));
-            contentType = FastskyCommon.JSON;
-        } else if(FastskyCommon.HTML.equals(serverResponse.getReturnType())){
-            buf = Unpooled.wrappedBuffer(result.toString().getBytes(StandardCharsets.UTF_8));
-            contentType = FastskyCommon.HTML;
-        }
-        DefaultFullHttpResponse response = new DefaultFullHttpResponse(HttpVersion.HTTP_1_1, HttpResponseStatus.OK, buf);
-        response.headers().set(HttpHeaderNames.CONTENT_TYPE, contentType);
-        response.headers().set(HttpHeaderNames.CONTENT_LENGTH, response.content().readableBytes());
-        return response;
-    }
+    private static DefaultFullHttpResponse buildResponse(Object result,String context, FastSkyServerResponse serverResponse) {
+        ByteBuf buf;
+        String contentType = FastskyCommon.HTML;
+        if (result != null) {
 
+            if (FastskyCommon.JSON.equals(serverResponse.getReturnType())) {
+                buf = Unpooled.wrappedBuffer(JSON.toJSONString(result).getBytes(StandardCharsets.UTF_8));
+                contentType = FastskyCommon.JSON;
+            } else if (FastskyCommon.HTML.equals(serverResponse.getReturnType())) {
+                buf = Unpooled.wrappedBuffer(result.toString().getBytes(StandardCharsets.UTF_8));
+                contentType = FastskyCommon.HTML;
+            } else {
+                buf = Unpooled.wrappedBuffer(result.toString().getBytes(StandardCharsets.UTF_8));
+            }
+            DefaultFullHttpResponse response = new DefaultFullHttpResponse(HttpVersion.HTTP_1_1, HttpResponseStatus.OK, buf);
+            response.headers().set(HttpHeaderNames.CONTENT_TYPE, contentType);
+            response.headers().set(HttpHeaderNames.CONTENT_LENGTH, response.content().readableBytes());
+            return response;
+        } else {
+
+                buf = Unpooled.wrappedBuffer(context.getBytes(StandardCharsets.UTF_8));
+                DefaultFullHttpResponse response = new DefaultFullHttpResponse(HttpVersion.HTTP_1_1, HttpResponseStatus.OK, buf);
+                response.headers().set(HttpHeaderNames.CONTENT_TYPE, contentType);
+                return response;
+            }
+    }
 }

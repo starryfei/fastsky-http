@@ -6,12 +6,11 @@ import java.util.Map;
 /**
  * ClassName: DefaultBeanFactory
  * Description: BeanFactory的默认实现类
- * Author: starryfei
- * Date: 2019-01-11 14:14
+ * @author: starryfei
+ * @date: 2019-01-11 14:14
  **/
 public class DefaultBeanFactory implements BeanFactory {
 
-    private static DefaultBeanFactory defaultBeanFactory;
     private static Map<String, Object> beans = new HashMap<>();
     public DefaultBeanFactory(){
 
@@ -25,8 +24,6 @@ public class DefaultBeanFactory implements BeanFactory {
 
     @Override
     public void register(Object obj) {
-//        String[] arrays = obj.getClass().getName().split("\\.");
-//        String name = arrays[arrays.length-1];
         beans.put(obj.getClass().getName(), obj);
     }
 

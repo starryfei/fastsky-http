@@ -19,7 +19,7 @@ import java.util.*;
  * Description: 根据root class加载所有的class
  *
  * @author: starryfei
- * Date: 2019-01-09 22:13
+ * @date: 2019-01-09 22:13
  **/
 public class ApplictaionInit {
     private static Logger logger = LoggerBuilder.getLogger(ApplictaionInit.class);
@@ -27,6 +27,7 @@ public class ApplictaionInit {
     private static Map<String,Class<?>> controllMap = null;
     private static Class<?> beanFactoryClass = null;
     private static Class<?> rootClass;
+    private static List<Class<?>> beans = null;
 
     public static void init(Class<?> cla, String rootPath) {
         rootClass = cla;
@@ -50,6 +51,7 @@ public class ApplictaionInit {
         } else {
             ApplicationConfig.getInstance().setRootPath(rootPath);
         }
+        ApplicationConfig.getInstance().setPackageName(rootClass.getPackage().getName());
     }
 
     /**
@@ -112,13 +114,15 @@ public class ApplictaionInit {
      */
     public static List<Class<?>>  routeBean() {
         Set<Class<?>> classes = ScanPackage.autoLoadClass(rootClass);
-        List<Class<?>> beans = new ArrayList<>();
-        controllMap = new HashMap<>(16);
-        for(Class<?> cla: classes) {
-            // 获取所有的FastController注解的类
-            if(cla.getAnnotation(FastController.class) != null) {
-                controllMap.put(cla.getName(),cla);
-                beans.add(cla);
+        if (beans == null) {
+            beans = new ArrayList<>();
+            controllMap = new HashMap<>(16);
+            for(Class<?> cla: classes) {
+                // 获取所有的FastController注解的类
+                if(cla.getAnnotation(FastController.class) != null) {
+                    controllMap.put(cla.getName(),cla);
+                    beans.add(cla);
+                }
             }
         }
         return beans;

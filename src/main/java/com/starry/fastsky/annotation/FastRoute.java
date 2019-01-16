@@ -6,7 +6,7 @@ import java.lang.annotation.*;
 
 /**
  * ClassName: FastRoute
- * Description: 路由注解
+ * Description: 方法路由注解
  * Author: starryfei
  * Date: 2019-01-11 10:43
  **/

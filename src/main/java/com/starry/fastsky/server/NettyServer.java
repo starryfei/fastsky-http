@@ -16,6 +16,13 @@ import io.netty.handler.codec.http.HttpResponseEncoder;
 import io.netty.handler.stream.ChunkedWriteHandler;
 import org.slf4j.Logger;
 
+/**
+ * ClassName: NettyServer
+ * Description: fastsky netty server端
+ *
+ * @author: starryfei
+ * @date: 2019-01-14 11:02
+ **/
 public class NettyServer {
     private final static Logger logger = LoggerBuilder.getLogger(NettyServer.class);
     private ApplicationConfig applicationConfig = ApplicationConfig.getInstance();
@@ -23,7 +30,9 @@ public class NettyServer {
     private EventLoopGroup boos = new NioEventLoopGroup();
     private Channel channel;
 
-
+    /**
+     * 启动server
+     */
     public void start(){
         final ServerBootstrap server = new ServerBootstrap();
         server.group(work,boos).channel(NioServerSocketChannel.class)
@@ -66,6 +75,9 @@ public class NettyServer {
 
     }
 
+    /**
+     * 停止server
+     */
     public void stop() {
         try {
             channel.closeFuture().sync();
@@ -76,6 +88,10 @@ public class NettyServer {
 
 
     }
+
+    /**
+     * shutdown钩子事件
+     */
     class ShutServer extends Thread{
         @Override
         public void run() {

@@ -13,9 +13,9 @@ import java.util.Set;
 
 /**
  * ClassName: ScanPackage
- * Description: TODO
- * Author: starryfei
- * Date: 2019-01-11 10:38
+ * Description: 扫描包下面的类
+ * @author: starryfei
+ * @date: 2019-01-11 10:38
  **/
 public class ScanPackage {
     private static Logger logger = LoggerBuilder.getLogger(ScanPackage.class);

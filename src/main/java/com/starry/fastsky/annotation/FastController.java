@@ -4,7 +4,7 @@ import java.lang.annotation.*;
 
 /**
  * ClassName: FastController
- * Description: TODO
+ * Description: 路由注解
  * Author: starryfei
  * Date: 2019-01-11 11:27
  **/

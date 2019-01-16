@@ -1,10 +1,8 @@
 package com.starry.fastsky.factory;
 
-import java.util.Map;
-
 /**
  * ClassName: BeanFactoryManager
- * Description: TODO
+ * Description: Bean的管理类
  *
  * @author: starryfei
  * @date: 2019-01-14 15:38
@@ -19,9 +17,19 @@ public class BeanFactoryManager {
         }
         return beanFactoryManager;
     }
+
+    /**
+     * 实例化beanFactory对象
+     * @param bean
+     */
     public void init(BeanFactory bean) {
         beanFactory = bean;
     }
+
+    /**
+     * 注册bean对象
+     * @param obj
+     */
     public void register(Object obj) {
         beanFactory.register(obj);
     }
@@ -30,7 +38,6 @@ public class BeanFactoryManager {
      * get route bean
      * @param name
      * @return
-     * @throws Exception
      */
     public Object getBean(String name) {
         return beanFactory.getBean(name) ;

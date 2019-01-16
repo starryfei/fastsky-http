@@ -18,13 +18,19 @@ import java.util.List;
 import java.util.Map;
 
 /**
+ * ClassName: FastSkyRequestHanlder
+ * Description:
  *
- */
+ * @author: starryfei
+ * @date: 2019-01-11 18:04
+ **/
 @ChannelHandler.Sharable
 public class FastSkyRequestHanlder extends SimpleChannelInboundHandler<DefaultHttpRequest> {
     private final static Logger logger = LoggerBuilder.getLogger(FastSkyRequestHanlder.class);
     private final static String FAVICON_ICO = "/favicon.ico";
     private RouteMethod routeMethod = new RouteMethod();
+
+
     @Override
     protected void channelRead0(ChannelHandlerContext channelHandlerContext, DefaultHttpRequest defaultHttpRequest) throws Exception {
         logger.info(defaultHttpRequest.method().name());

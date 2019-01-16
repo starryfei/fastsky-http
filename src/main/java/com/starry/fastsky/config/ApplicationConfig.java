@@ -3,8 +3,8 @@ package com.starry.fastsky.config;
 /**
  * ClassName: ApplicationConfig
  * Description: 单例模式，存储root包信息和路径信息
- * Author: starryfei
- * Date: 2019-01-09 22:38
+ * @author: starryfei
+ * @date: 2019-01-09 22:38
  **/
 public class ApplicationConfig {
     private static ApplicationConfig applicationConfig ;

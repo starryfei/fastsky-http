@@ -2,13 +2,13 @@ package com.starry.fastsky.factory;
 
 /**
  * ClassName: BeanFactory
- * Description: TODO
- * Author: starryfei
- * Date: 2019-01-11 11:46
+ * Description: bean的接口
+ * @author: starryfei
+ * @date: 2019-01-11 11:46
  **/
 public interface BeanFactory {
     /**
-     * 通过name回去bean
+     * 通过name获取bean
       * @param name
      * @return
      */

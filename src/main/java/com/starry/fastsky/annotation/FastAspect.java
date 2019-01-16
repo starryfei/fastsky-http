@@ -5,7 +5,7 @@ import java.lang.annotation.*;
 
 /**
  * ClassName: FastAspect
- * Description: TODO
+ * Description: 切面注解
  *
  * @author: starryfei
  * @date: 2019-01-11 18:04

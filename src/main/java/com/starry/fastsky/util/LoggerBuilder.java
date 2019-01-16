@@ -4,11 +4,10 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- * Function:
- *
- * @author crossoverJie
- *         Date: 2018/8/31 19:35
- * @since JDK 1.8
+ * Class: LoggerBuilder
+ * Describle: logger类
+ * @author starryfei
+ * @date: 2019-01-15 11:10
  */
 public class LoggerBuilder {
 
