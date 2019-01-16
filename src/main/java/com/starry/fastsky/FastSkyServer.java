@@ -14,7 +14,7 @@ public class FastSkyServer {
 
     public static void main(String[] args) {
 
-        ApplictaionInit.init(FastSkyServer.class, "/fastsky");
+        ApplictaionInit.init(FastSkyServer.class, null);
 
         NettyServer server = new NettyServer();
         server.start();

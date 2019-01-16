@@ -63,8 +63,10 @@ public class ApplictaionInit {
             InputStream stream = FastSkyServer.class.getClassLoader().getResourceAsStream(propertiesPath);
             Properties properties = new Properties();
             properties.load(stream);
-            ApplicationConfig.getInstance().setRootPath(properties.getProperty(FastskyCommon.FASTSKY_PATH));
-            ApplicationConfig.getInstance().setPort(Integer.parseInt(properties.getProperty(FastskyCommon.FASTSKY_PORT)));
+            ApplicationConfig app = ApplicationConfig.getInstance();
+            app.setRootPath(properties.getProperty(FastskyCommon.FASTSKY_PATH));
+            app.setPort(Integer.parseInt(properties.getProperty(FastskyCommon.FASTSKY_PORT)));
+            app.setOpenSSL(Boolean.parseBoolean(properties.getProperty(FastskyCommon.FASTSKY_SSL)));
         } catch (IOException e) {
             e.printStackTrace();
         }

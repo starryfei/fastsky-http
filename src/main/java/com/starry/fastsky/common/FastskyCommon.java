@@ -3,13 +3,15 @@ package com.starry.fastsky.common;
 /**
  * ClassName: FastskyCommon
  * Description: 常量类
- * Author: starryfei
- * Date: 2019-01-08 13:49
+ * @author: starryfei
+ * @date: 2019-01-08 13:49
  **/
 public class FastskyCommon {
 
     public final static String FASTSKY_PORT = "fastsky.server.port";
     public final static String FASTSKY_PATH = "fastsky.server.path";
+    public final static String FASTSKY_SSL = "fastsky.server.ssl";
+
     public final static String APPLICATION_PROPERTIES = "application.properties";
     public final static String JSON = "application/json; charset=UTF-8";
     public final static String TEXT = "text/plain; charset=UTF-8";

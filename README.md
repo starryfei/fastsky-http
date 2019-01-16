@@ -11,6 +11,7 @@
 - [ ] 切面
 - [ ] 支持多种响应方式(json,xml,html,text)
 - [ ] 模板引擎支持
+- [x] [支持netty https/http](https://www.zuoyanyouwu.com/2017/01/netty-ssl-using-and-analyze/)
 
 ------------
 

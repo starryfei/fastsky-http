@@ -10,7 +10,17 @@ public class ApplicationConfig {
     private static ApplicationConfig applicationConfig ;
     private String packageName;
     private String rootPath;
+    private boolean isOpenSSL;
+    private static final String LINE = "/";
     private int port = 9511;
+
+    public boolean isOpenSSL() {
+        return isOpenSSL;
+    }
+
+    public void setOpenSSL(boolean openSSL) {
+        isOpenSSL = openSSL;
+    }
 
     public int getPort() {
         return port;
@@ -45,6 +55,6 @@ public class ApplicationConfig {
     }
 
     public void setRootPath(String rootPath) {
-        this.rootPath = rootPath;
+        this.rootPath = LINE+rootPath;
     }
 }
