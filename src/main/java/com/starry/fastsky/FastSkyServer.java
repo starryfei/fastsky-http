@@ -12,13 +12,29 @@ import com.starry.fastsky.server.NettyServer;
  **/
 public class FastSkyServer {
 
-    public static void main(String[] args) {
-
-        ApplictaionInit.init(FastSkyServer.class, null);
-
+    /**
+     * Start the service path
+     * @param clazz
+     * @param path
+     */
+    public static void start(Class<?> clazz,String path) {
+        ApplictaionInit.init(clazz, null);
         NettyServer server = new NettyServer();
         server.start();
-        server.stop();
+    }
+
+
+    /**
+     * Start the service
+     * @param clazz
+     */
+    public static void start(Class<?> clazz) {
+        start(clazz,null);
+    }
+
+    public static void main(String[] args) {
+
+        FastSkyServer.start(FastSkyServer.class);
 
     }
 }
