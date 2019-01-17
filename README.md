@@ -65,5 +65,5 @@ public class User {
 ```
 访问 http://127.0.0.1:9121/demo/Demo/getUser?name=fastsky&pwd=1243
 响应信息： {"name":"fastsky","pwd":"1243"}
-[![](响应)](https://github.com/starryfei/fastsky/img/http.png)
+[![](响应)](https://github.com/starryfei/fastsky/blob/master/img/http.png)
 
