@@ -16,6 +16,9 @@ public class FastskyCommon {
     public final static String JSON = "application/json; charset=UTF-8";
     public final static String TEXT = "text/plain; charset=UTF-8";
     public final static String HTML = "text/html; charset=UTF-8";
+    public final static String POINTCUT = "PointCut";
+    public final static String START = "start";
+    public final static String END = "end";
     public final static String CONTEXT = "<center> Hello FastSky <br/><br/>" +
             "Power by <a href='https://github.com/starryfei/fastsky'>@fastsky</a> </center>";
 

@@ -1,21 +1,14 @@
 package com.starry.fastsky.handler;
 
-import com.starry.fastsky.common.FastskyCommon;
-import com.starry.fastsky.config.ApplicationConfig;
+import com.starry.fastsky.config.AppConfig;
 import com.starry.fastsky.route.RouteMethod;
 import com.starry.fastsky.util.LoggerBuilder;
 import com.starry.fastsky.util.URLUtil;
-import io.netty.buffer.ByteBuf;
-import io.netty.buffer.Unpooled;
 import io.netty.channel.*;
 import io.netty.handler.codec.http.*;
-import io.netty.handler.codec.http.cookie.Cookie;
 import org.slf4j.Logger;
 
 import java.net.URLDecoder;
-import java.nio.charset.StandardCharsets;
-import java.util.List;
-import java.util.Map;
 
 /**
  * ClassName: FastSkyRequestHanlder
@@ -33,12 +26,12 @@ public class FastSkyRequestHanlder extends SimpleChannelInboundHandler<DefaultHt
 
     @Override
     protected void channelRead0(ChannelHandlerContext channelHandlerContext, DefaultHttpRequest defaultHttpRequest) throws Exception {
-        logger.info(defaultHttpRequest.method().name());
-        logger.info(defaultHttpRequest.uri());
-
-        for (Map.Entry<String, String> entry : defaultHttpRequest.headers().entries()) {
-            logger.info(entry.getKey(),entry.getValue());
-        }
+//        logger.info(defaultHttpRequest.method().name());
+//        logger.info(defaultHttpRequest.uri());
+//
+//        for (Map.Entry<String, String> entry : defaultHttpRequest.headers().entries()) {
+//            logger.info(entry.getKey(),entry.getValue());
+//        }
 
         QueryStringDecoder queryStringDecoder = new QueryStringDecoder(URLDecoder.decode(defaultHttpRequest.uri(), "utf-8"));
         // 过滤图标请求
@@ -47,11 +40,11 @@ public class FastSkyRequestHanlder extends SimpleChannelInboundHandler<DefaultHt
         }
         checkUri(queryStringDecoder.path());
         DefaultHttpResponse response = routeMethod.invoke(queryStringDecoder);
-        for (Map.Entry<String, List<String>> entry: queryStringDecoder.parameters().entrySet()) {
-            logger.info(entry.getValue().get(0));
-            logger.info(entry.getKey());
-
-        }
+//        for (Map.Entry<String, List<String>> entry: queryStringDecoder.parameters().entrySet()) {
+//            logger.info(entry.getValue().get(0));
+//            logger.info(entry.getKey());
+//
+//        }
         ChannelFuture future = channelHandlerContext.writeAndFlush(response);
         future.addListener(ChannelFutureListener.CLOSE);
     }
@@ -68,7 +61,7 @@ public class FastSkyRequestHanlder extends SimpleChannelInboundHandler<DefaultHt
 
     private static void checkUri(String uri) {
 
-        String rootPath = ApplicationConfig.getInstance().getRootPath();
+        String rootPath = AppConfig.getInstance().getRootPath();
         String path = URLUtil.getRootPath(uri);
         if (!rootPath.equals(path)) {
             throw new RuntimeException("can not connect: "+uri);

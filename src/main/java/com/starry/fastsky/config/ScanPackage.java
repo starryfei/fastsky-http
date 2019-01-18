@@ -33,7 +33,7 @@ public class ScanPackage {
         if (rootClass.getPackage() != null) {
             String packAgeName = rootClass.getPackage().getName();
             String packAge = packAgeName.replace(".", "/");
-            ApplicationConfig.getInstance().setPackageName(packAge);
+            AppConfig.getInstance().setPackageName(packAge);
             Enumeration<URL> dirs; //枚举元素
             try {
                 // 加载包下面所有的资源

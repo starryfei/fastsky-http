@@ -1,41 +1,46 @@
 package com.starry.fastsky.config;
 
-import com.starry.fastsky.FastSkyServer;
-import com.starry.fastsky.annotation.FastController;
+import com.starry.fastsky.annotation.*;
 import com.starry.fastsky.common.FastskyCommon;
 import com.starry.fastsky.factory.BeanFactory;
 import com.starry.fastsky.factory.BeanFactoryManager;
 import com.starry.fastsky.factory.DefaultBeanFactory;
+import com.starry.fastsky.proxy.CGLibProxy;
 import com.starry.fastsky.util.LoggerBuilder;
 import org.slf4j.Logger;
 
-import java.io.IOException;
-import java.io.InputStream;
+import java.lang.reflect.Method;
 import java.util.*;
 
 
 /**
- * ClassName: ApplictaionInit
+ * ClassName: Appinitialize
  * Description: 根据root class加载所有的class
  *
  * @author: starryfei
  * @date: 2019-01-09 22:13
  **/
-public class ApplictaionInit {
-    private static Logger logger = LoggerBuilder.getLogger(ApplictaionInit.class);
+public class Appinitialize {
+    private static Logger logger = LoggerBuilder.getLogger(Appinitialize.class);
     private final static int BEANS_LENGTH = 2;
     private static Map<String,Class<?>> controllMap = null;
     private static Class<?> beanFactoryClass = null;
-    private static Class<?> rootClass;
     private static List<Class<?>> beans = null;
+    private static Set<Class<?>> allClasss = null;
 
+
+    /**
+     * 初始化工程信息
+     * @param cla
+     * @param rootPath
+     */
     public static void init(Class<?> cla, String rootPath) {
-        rootClass = cla;
-        initRootPath(rootPath);
-        routeBean();
-
+        LoadProperties.initRootPath(rootPath, cla);
+        allClasss = ScanPackage.autoLoadClass(cla);
+        routeBeans();
         try {
             registerBeanToFactory();
+            AspectConfig.loadAspect(allClasss);
         } catch (IllegalAccessException e) {
             e.printStackTrace();
         } catch (InstantiationException e) {
@@ -44,42 +49,13 @@ public class ApplictaionInit {
 
     }
 
-    private static void initRootPath(String rootPath) {
-        System.out.println(FastskyCommon.FASTSKY_LOGO);
-        if (rootPath == null || "".equals(rootPath)) {
-            loadProperties();
-        } else {
-            ApplicationConfig.getInstance().setRootPath(rootPath);
-        }
-        ApplicationConfig.getInstance().setPackageName(rootClass.getPackage().getName());
-    }
-
-    /**
-     * 读resource文件夹下的配置文件
-     */
-    private static void loadProperties(){
-        String propertiesPath = FastskyCommon.APPLICATION_PROPERTIES;
-        try {
-            InputStream stream = FastSkyServer.class.getClassLoader().getResourceAsStream(propertiesPath);
-            Properties properties = new Properties();
-            properties.load(stream);
-            ApplicationConfig app = ApplicationConfig.getInstance();
-            app.setRootPath(properties.getProperty(FastskyCommon.FASTSKY_PATH));
-            app.setPort(Integer.parseInt(properties.getProperty(FastskyCommon.FASTSKY_PORT)));
-            app.setOpenSSL(Boolean.parseBoolean(properties.getProperty(FastskyCommon.FASTSKY_SSL)));
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-    }
     /**
      * 实例化bean,并注册到beanfactory
      */
 
     private static void registerBeanToFactory() throws IllegalAccessException, InstantiationException {
-        Set<Class<?>> classes = ScanPackage.autoLoadClass(rootClass);
         List<Class<?>> beans = new ArrayList<>();
-        for(Class<?> cla: classes) {
+        for(Class<?> cla: allClasss) {
             // 获取所有的实现BeanFactory的类
             if(cla.getInterfaces().length == 0) {
                 continue;
@@ -114,12 +90,11 @@ public class ApplictaionInit {
      * 加载所有的FastController注解的类
      * @return
      */
-    public static List<Class<?>>  routeBean() {
-        Set<Class<?>> classes = ScanPackage.autoLoadClass(rootClass);
+    public static List<Class<?>> routeBeans() {
         if (beans == null) {
-            beans = new ArrayList<>();
+            beans = new ArrayList<>(10);
             controllMap = new HashMap<>(16);
-            for(Class<?> cla: classes) {
+            for(Class<?> cla: allClasss) {
                 // 获取所有的FastController注解的类
                 if(cla.getAnnotation(FastController.class) != null) {
                     controllMap.put(cla.getName(),cla);

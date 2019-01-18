@@ -1,6 +1,6 @@
 package com.starry.fastsky;
 
-import com.starry.fastsky.config.ApplictaionInit;
+import com.starry.fastsky.config.Appinitialize;
 import com.starry.fastsky.server.NettyServer;
 
 /**
@@ -18,7 +18,7 @@ public class FastSkyServer {
      * @param path
      */
     public static void start(Class<?> clazz,String path) {
-        ApplictaionInit.init(clazz, null);
+        Appinitialize.init(clazz, null);
         NettyServer server = new NettyServer();
         server.start();
     }

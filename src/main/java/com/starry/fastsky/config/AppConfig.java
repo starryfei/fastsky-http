@@ -1,13 +1,13 @@
 package com.starry.fastsky.config;
 
 /**
- * ClassName: ApplicationConfig
+ * ClassName: AppConfig
  * Description: 单例模式，存储root包信息和路径信息
  * @author: starryfei
  * @date: 2019-01-09 22:38
  **/
-public class ApplicationConfig {
-    private static ApplicationConfig applicationConfig ;
+public class AppConfig {
+    private static AppConfig appConfig ;
     private String packageName;
     private String rootPath;
     private boolean isOpenSSL;
@@ -31,11 +31,11 @@ public class ApplicationConfig {
         this.port = port;
     }
 
-    public static ApplicationConfig getInstance() {
-        if (applicationConfig == null) {
-            return applicationConfig = new ApplicationConfig();
+    public static AppConfig getInstance() {
+        if (appConfig == null) {
+            return appConfig = new AppConfig();
         }
-        return applicationConfig;
+        return appConfig;
     }
 
     public String getPackageName() {
@@ -46,7 +46,7 @@ public class ApplicationConfig {
         this.packageName = packageName;
     }
 
-    private ApplicationConfig() {
+    private AppConfig() {
 
     }
 

@@ -4,13 +4,12 @@ import com.alibaba.fastjson.JSON;
 import com.starry.fastsky.annotation.FastController;
 import com.starry.fastsky.annotation.FastRoute;
 import com.starry.fastsky.common.FastskyCommon;
-import com.starry.fastsky.config.ApplicationConfig;
-import com.starry.fastsky.config.ApplictaionInit;
+import com.starry.fastsky.config.AppConfig;
+import com.starry.fastsky.config.Appinitialize;
 import com.starry.fastsky.enums.FastSkyServerResponse;
 import com.starry.fastsky.factory.BeanFactoryManager;
 import com.starry.fastsky.util.ConvertComplexTypeUtil;
 import com.starry.fastsky.util.LoggerBuilder;
-import com.starry.fastsky.util.URLUtil;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
 import io.netty.handler.codec.http.*;
@@ -41,15 +40,14 @@ public class RouteMethod {
     private void loadMethod() {
         if (methodMap == null) {
             methodMap = new HashMap<>(16);
-            List<Class<?>> beans = ApplictaionInit.routeBean();
+            List<Class<?>> beans = Appinitialize.routeBeans();
             for (Class<?> cla : beans) {
                 FastController controller = cla.getAnnotation(FastController.class);
                 for (Method method : cla.getMethods()) {
                     FastRoute fastRoute = method.getAnnotation(FastRoute.class);
                     if(fastRoute != null) {
-                        String methodName = ApplicationConfig.getInstance().getRootPath() + controller.value()
+                        String methodName = AppConfig.getInstance().getRootPath() + controller.value()
                                 +fastRoute.path();
-                        System.out.println(methodName);
                         methodMap.put(methodName, method);
                     }
                 }
@@ -66,7 +64,7 @@ public class RouteMethod {
         String path = queryStringDecoder.path();
         logger.info(path);
         // 首页判断
-        if(ApplicationConfig.getInstance().getRootPath().equals(path)) {
+        if(AppConfig.getInstance().getRootPath().equals(path)) {
             return buildResponse(null,FastskyCommon.CONTEXT,null);
         }
         loadMethod();
@@ -80,10 +78,11 @@ public class RouteMethod {
         FastRoute fastRoute = method.getAnnotation(FastRoute.class);
         BeanFactoryManager manager = BeanFactoryManager.getInstance();
         Object obj = manager.getBean(method.getDeclaringClass().getName());
+        logger.info(obj.getClass().getName());
         Object returnObj = null;
         try {
             Object[] args = ConvertComplexTypeUtil.convertDataType(method.getParameterTypes(), queryStringDecoder);
-            returnObj = method.invoke(obj.getClass(), args);
+            returnObj = method.invoke(obj, args);
         } catch (IllegalAccessException e) {
             e.printStackTrace();
         } catch (InvocationTargetException e) {

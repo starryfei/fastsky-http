@@ -8,7 +8,7 @@
 - [x] bean的集中管理
 - [x] 支持注解
 - [x] 配置文件的读取
-- [ ] 切面
+- [x] 切面
 - [x] 支持多种响应方式(json,html,text)
 - [ ] 模板引擎支持
 - [x] [支持netty https/http](https://www.zuoyanyouwu.com/2017/01/netty-ssl-using-and-analyze/)
@@ -47,12 +47,25 @@ fastsky.server.ssl = true
 @FastController(value = "/Demo")
 public class Demo  {
     @FastRoute(path = "/hello")
-    public static String hello(int a, String b){
+    public String hello(int a, String b){
         return a+" "+b;
     }
     @FastRoute(path = "/getUser",type = FastSkyServerResponse.JSON)
-    public static User HH(User user){
+    public User HH(User user){
         return user;
+    }
+    @FastRoute(path = "/getAllUser",type = FastSkyServerResponse.JSON)
+    public  List<User> getUsers(){
+        User user = new User();
+        user.setName("aa");
+        user.setPwd("123");
+        User user1 = new User();
+        user1.setName("bb");
+        user1.setPwd("456");
+        List<User> users = new ArrayList<>();
+        users.add(user);
+        users.add(user1);
+        return users;
     }
 }
 
@@ -66,4 +79,6 @@ public class User {
 访问 http://127.0.0.1:9121/demo/Demo/getUser?name=fastsky&pwd=1243
 响应信息： {"name":"fastsky","pwd":"1243"}
 [![](响应)](https://github.com/starryfei/fastsky/img/http.png)
+#### 切面
+
 

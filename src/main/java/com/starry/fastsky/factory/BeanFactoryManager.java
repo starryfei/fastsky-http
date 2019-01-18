@@ -31,7 +31,11 @@ public class BeanFactoryManager {
      * @param obj
      */
     public void register(Object obj) {
-        beanFactory.register(obj);
+        register(obj.getClass().getName(), obj);
+
+    }
+    public void register(String name, Object obj) {
+        beanFactory.register(name,obj);
     }
 
     /**
@@ -49,5 +53,9 @@ public class BeanFactoryManager {
      */
     public void releaseBean(){
         beanFactory.destroy();
+    }
+
+    public void remove(String name) {
+        beanFactory.remove(name);
     }
 }

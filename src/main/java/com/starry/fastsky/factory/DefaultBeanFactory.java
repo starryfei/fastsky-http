@@ -23,12 +23,21 @@ public class DefaultBeanFactory implements BeanFactory {
     }
 
     @Override
-    public void register(Object obj) {
-        beans.put(obj.getClass().getName(), obj);
+    public void register(String name, Object obj) {
+        beans.put(name, obj);
     }
+//    public void register( Object obj) {
+//        register(obj.getClass().getName(), obj);
+//    }
+
 
     @Override
     public void destroy() {
         beans.clear();
+    }
+
+    @Override
+    public void remove(String name) {
+        beans.remove(name);
     }
 }

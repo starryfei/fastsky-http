@@ -10,7 +10,7 @@ import java.lang.annotation.*;
  * @author: starryfei
  * @date: 2019-01-11 18:04
  **/
-@Target(ElementType.METHOD)
+@Target(ElementType.TYPE)
 @Retention(RetentionPolicy.RUNTIME)
 @Documented
 public @interface FastAspect {

@@ -19,12 +19,14 @@ public interface BeanFactory {
      * @param obj
      * @return
      */
-    void register(Object obj);
+    void register(String name, Object obj);
     /**
      * 销毁bean
      *
      * @return
      */
     void destroy();
+
+    void remove(String name);
 
 }

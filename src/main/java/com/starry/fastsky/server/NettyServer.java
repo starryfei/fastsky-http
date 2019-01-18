@@ -1,6 +1,6 @@
 package com.starry.fastsky.server;
 
-import com.starry.fastsky.config.ApplicationConfig;
+import com.starry.fastsky.config.AppConfig;
 import com.starry.fastsky.factory.BeanFactoryManager;
 import com.starry.fastsky.handler.FastSkyRequestHanlder;
 import com.starry.fastsky.util.LoggerBuilder;
@@ -21,8 +21,6 @@ import javax.net.ssl.SSLEngine;
 import javax.net.ssl.SSLException;
 import java.security.cert.CertificateException;
 
-import static io.netty.handler.codec.http2.Http2SecurityUtil.CIPHERS;
-
 /**
  * ClassName: NettyServer
  * Description: fastsky netty server端
@@ -32,7 +30,7 @@ import static io.netty.handler.codec.http2.Http2SecurityUtil.CIPHERS;
  **/
 public class NettyServer {
     private final static Logger logger = LoggerBuilder.getLogger(NettyServer.class);
-    private ApplicationConfig applicationConfig = ApplicationConfig.getInstance();
+    private AppConfig applicationConfig = AppConfig.getInstance();
     private EventLoopGroup work = new NioEventLoopGroup();
     private EventLoopGroup boos = new NioEventLoopGroup();
     private Channel channel;
