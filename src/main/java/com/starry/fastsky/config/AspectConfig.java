@@ -46,35 +46,34 @@ public class AspectConfig {
      * @throws InstantiationException
      */
     private static void getPointCutMethod(Class<?> cla, Method[] methods) throws IllegalAccessException, InstantiationException {
-        boolean isPointCut = false;
-        String classPath = "";
-        Map<String,Method> map = new HashMap<>(2);
-        for (Method method: methods) {
-            Pointcut pointcut = method.getAnnotation(Pointcut.class);
-            Before before = method.getAnnotation(Before.class);
-            After after = method.getAnnotation(After.class);
-            if (pointcut != null) {
-                isPointCut = true;
-                classPath = pointcut.value();
+//        boolean isPointCut = false;
+        String classPath = cla.getAnnotation(FastAspect.class).value();
+        for (String path: classPath.split(";")) {
+            Map<String,Method> map = new HashMap<>(2);
+            for (Method method: methods) {
+                Before before = method.getAnnotation(Before.class);
+                After after = method.getAnnotation(After.class);
+                if (before != null) {
+                    map.put(FastskyCommon.START,method);
+                }
+                if (after != null) {
+                    map.put(FastskyCommon.END, method);
+                }
             }
-            if (before != null) {
-                map.put(FastskyCommon.START,method);
-            }
-            if (after != null) {
-                map.put(FastskyCommon.END, method);
-            }
-        }
-        if (isPointCut) {
             Method start = map.get(FastskyCommon.START);
             Method end = map.get(FastskyCommon.END);
-            // 转化动态类，可以考虑一个切面关联多个类
-            Object object = manager.getBean(classPath);
-            Object instance = cla.newInstance();
-            CGLibProxy cgLibProxy = new CGLibProxy(start,end,instance);
-            Object obj = cgLibProxy.getProxy(object.getClass());
-            // 移除原有的bean
-            manager.remove(classPath);
-            manager.register(classPath, obj);
+
+            Object object = manager.getBean(path);
+            if (object != null) {
+                Object instance = cla.newInstance();
+                // 转化动态类
+                CGLibProxy cgLibProxy = new CGLibProxy(start, end, instance);
+                Object obj = cgLibProxy.getProxy(object.getClass());
+                // 移除原有的bean
+                manager.remove(path);
+                manager.register(path, obj);
+            }
         }
+
     }
 }

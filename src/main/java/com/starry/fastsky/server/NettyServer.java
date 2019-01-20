@@ -3,6 +3,7 @@ package com.starry.fastsky.server;
 import com.starry.fastsky.config.AppConfig;
 import com.starry.fastsky.factory.BeanFactoryManager;
 import com.starry.fastsky.handler.FastSkyRequestHanlder;
+import com.starry.fastsky.https.SSLConfig;
 import com.starry.fastsky.util.LoggerBuilder;
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.buffer.UnpooledByteBufAllocator;
@@ -30,22 +31,26 @@ import java.security.cert.CertificateException;
  **/
 public class NettyServer {
     private final static Logger logger = LoggerBuilder.getLogger(NettyServer.class);
-    private AppConfig applicationConfig = AppConfig.getInstance();
-    private EventLoopGroup work = new NioEventLoopGroup();
-    private EventLoopGroup boos = new NioEventLoopGroup();
-    private Channel channel;
+    private static AppConfig applicationConfig = AppConfig.getInstance();
+    private static EventLoopGroup work = new NioEventLoopGroup();
+    private static EventLoopGroup boos = new NioEventLoopGroup();
+    private static Channel channel;
 
+    public static void init(){
+        start();
+        stop();
+    }
     /**
      * 启动server
      */
-    public void start(){
+    private static void start(){
         final ServerBootstrap server = new ServerBootstrap();
         server.group(work,boos).channel(NioServerSocketChannel.class)
                .childHandler(new ChannelInitializer<SocketChannel>() {
                    @Override
                    protected void initChannel(SocketChannel socketChannel) throws Exception {
                        if(applicationConfig.isOpenSSL()) {
-                           SSLEngine sslEngine = openSSL();
+                           SSLEngine sslEngine = SSLConfig.openSSL();
                            // 添加 SslHandler 之 pipeline 中
                            logger.info("start ssl");
                            socketChannel.pipeline().addFirst("ssl", new SslHandler(sslEngine));
@@ -63,7 +68,6 @@ public class NettyServer {
                         */
 
                        socketChannel.pipeline().addLast(new HttpRequestDecoder());
-                       socketChannel.pipeline().addLast(new ChunkedWriteHandler());
 
                        socketChannel.pipeline().addLast(new FastSkyRequestHanlder());
 
@@ -91,45 +95,24 @@ public class NettyServer {
 
     }
 
-    /**
-     * Netty 自带的自签名证书工具
-     * @return
-     * @throws CertificateException
-     * @throws SSLException
-     */
-    private SSLEngine openSSL() throws CertificateException, SSLException {
-        SelfSignedCertificate ssc = new SelfSignedCertificate();
-        SslContext sslCtx = SslContextBuilder.forServer(ssc.certificate(), ssc.privateKey()).build();
-        SSLEngine sslEngine = sslCtx.newEngine(UnpooledByteBufAllocator.DEFAULT);
-        // 配置为 server 模式
-        sslEngine.setUseClientMode(false);
-        // 选择需要启用的 SSL 协议，如 SSLv2 SSLv3 TLSv1 TLSv1.1 TLSv1.2 等
-        sslEngine.setEnabledProtocols(sslEngine.getSupportedProtocols());
-        // 选择需要启用的 CipherSuite 组合，如 ECDHE-ECDSA-CHACHA20-POLY1305 等
-        sslEngine.setEnabledCipherSuites(sslEngine.getSupportedCipherSuites());
-        return sslEngine;
 
-
-//        return sslContext;
-    }
     /**
      * 停止server
      */
-    public void stop() {
+    private static void stop() {
+        Runtime.getRuntime().addShutdownHook(new ShutServer());
         try {
             channel.closeFuture().sync();
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-        Runtime.getRuntime().addShutdownHook(new ShutServer());
-
 
     }
 
     /**
      * shutdown钩子事件
      */
-    class ShutServer extends Thread{
+    static class ShutServer extends Thread{
         @Override
         public void run() {
             logger.info("fastsky stoping..");
@@ -137,7 +120,7 @@ public class NettyServer {
             work.shutdownGracefully();
             boos.shutdownGracefully();
 
-            logger.info("Server stoped");
+            logger.info("fastsky stoped");
         }
     }
 }

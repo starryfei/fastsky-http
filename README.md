@@ -80,7 +80,7 @@ public class User {
 响应信息： {"name":"fastsky","pwd":"1243"}
 [![](响应)](https://github.com/starryfei/fastsky/img/http.png)
 #### 切面实现思路
-- 扫描带有@FastAspect注解的类，获取PointCut注解的方法，根据该方法配置需要使用的类，从BeanFactory中获取该类，
+- 扫描带有@FastAspect注解的类，根据该注解配置需要使用的类，可以同时配置多个，以分号分割，从BeanFactory中获取该类，
 - 根据获取到类，使用CGLib生成动态类，同时将标有@Before和@After添加到该动态类中
 - 将这个动态类管理到BeanFactory中，同时将原有的Bean从BeanFactory中移除
 
@@ -96,23 +96,18 @@ manager.register(classPath, obj);
 ```
 ##### 切面的使用
 ```java
-@FastAspect
+@FastAspect("com.starry.fastsky.test.Demo")
 public class Log {
     private static final Logger LOGGER = LoggerBuilder.getLogger(Log.class);
     private Long start;
     private Long end;
 
-    @Pointcut("com.starry.fastsky.test.Demo")
-    public void start() {
-        LOGGER.info("开始注解");
-    }
-
-    @Before("start()")
+    @Before()
     public void before() {
         start = System.currentTimeMillis();
         LOGGER.info("---before---");
     }
-    @After("start()")
+    @After()
     public void after() {
         end = System.currentTimeMillis();
         LOGGER.info("cast [{}] times", end - start);

@@ -96,7 +96,9 @@ public class Appinitialize {
             controllMap = new HashMap<>(16);
             for(Class<?> cla: allClasss) {
                 // 获取所有的FastController注解的类
-                if(cla.getAnnotation(FastController.class) != null) {
+                FastController fastController = cla.getAnnotation(FastController.class);
+                if(fastController != null) {
+                    logger.info("find controller [{}]", fastController.value());
                     controllMap.put(cla.getName(),cla);
                     beans.add(cla);
                 }

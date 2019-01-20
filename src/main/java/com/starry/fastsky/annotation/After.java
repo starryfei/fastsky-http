@@ -16,7 +16,7 @@ public @interface After {
     /**
      * The pointcut expression where to bind the advice
      */
-    String value();
+    String value() default "";
 
     /**
      * When compiling without debug info, or when interpreting pointcuts at runtime,
