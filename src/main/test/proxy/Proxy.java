@@ -59,5 +59,5 @@ public class Proxy {
         test.test();
     }
 
-    }
+}
 

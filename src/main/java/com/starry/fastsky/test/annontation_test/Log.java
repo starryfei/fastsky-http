@@ -15,7 +15,7 @@ import org.slf4j.Logger;
  * @author: starryfei
  * @date: 2019-01-18 14:15
  **/
-@FastAspect("com.starry.fastsky.test.Demo;com.starry.fastsky.test.Demo2")
+@FastAspect(value = {"com.starry.fastsky.test.Demo","com.starry.fastsky.test.Demo2"})
 public class Log implements Iterceptor {
     private static final Logger LOGGER = LoggerBuilder.getLogger(Log.class);
     private Long start;
@@ -40,8 +40,4 @@ public class Log implements Iterceptor {
         LOGGER.info("---after---");
     }
 
-    @Override
-    public void around() {
-
-    }
 }

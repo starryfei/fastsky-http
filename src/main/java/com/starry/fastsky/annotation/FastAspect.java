@@ -14,5 +14,5 @@ import java.lang.annotation.*;
 @Retention(RetentionPolicy.RUNTIME)
 @Documented
 public @interface FastAspect {
-    String  value() default "";
+    String[] value() default {};
 }

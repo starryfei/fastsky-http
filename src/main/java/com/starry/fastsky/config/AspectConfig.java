@@ -33,7 +33,8 @@ public class AspectConfig {
     public static void loadAspect(Set<Class<?>> allClasss) throws InstantiationException, IllegalAccessException {
         for (Class<?> cla : allClasss) {
             if (cla.getAnnotation(FastAspect.class) != null) {
-                getPointCutMethod(cla, cla.getDeclaredMethods());
+                logger.info("sacn aspect class [{}]",cla.getName());
+                getPointCutMethod(cla);
             }
         }
     }
@@ -41,16 +42,15 @@ public class AspectConfig {
     /**
      * 获取切面的关联的类，将其转化为cglib动态类管理
      * @param cla
-     * @param methods
      * @throws IllegalAccessException
      * @throws InstantiationException
      */
-    private static void getPointCutMethod(Class<?> cla, Method[] methods) throws IllegalAccessException, InstantiationException {
+    private static void getPointCutMethod(Class<?> cla) throws IllegalAccessException, InstantiationException {
 //        boolean isPointCut = false;
-        String classPath = cla.getAnnotation(FastAspect.class).value();
-        for (String path: classPath.split(";")) {
+        String[] classPath = cla.getAnnotation(FastAspect.class).value();
+        for (String path: classPath) {
             Map<String,Method> map = new HashMap<>(2);
-            for (Method method: methods) {
+            for (Method method: cla.getDeclaredMethods()) {
                 Before before = method.getAnnotation(Before.class);
                 After after = method.getAnnotation(After.class);
                 if (before != null) {

@@ -46,7 +46,7 @@ public class Appinitialize {
         } catch (InstantiationException e) {
             e.printStackTrace();
         }
-
+        logger.info("----------beans load finish-------------");
     }
 
     /**
@@ -98,7 +98,7 @@ public class Appinitialize {
                 // 获取所有的FastController注解的类
                 FastController fastController = cla.getAnnotation(FastController.class);
                 if(fastController != null) {
-                    logger.info("find controller [{}]", fastController.value());
+                    logger.info("find bean [{}]", cla.getName());
                     controllMap.put(cla.getName(),cla);
                     beans.add(cla);
                 }

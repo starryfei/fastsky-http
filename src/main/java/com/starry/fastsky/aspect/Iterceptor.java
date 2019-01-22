@@ -13,7 +13,5 @@ public interface Iterceptor {
 
     void after();
 
-    void around();
-
 
 }
